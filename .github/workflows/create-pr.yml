@@ -1,0 +1,28 @@
+
+name: Create Pr
+
+on:
+  push:
+    branches:
+      [develop]
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Git
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+      - name: Create Pull Request to Main
+        run: |
+          pr_title="Auto PR from $GITHUB_REF"
+          pr_body="This PR is created automatically from branch $GITHUB_REF"
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -d '{"title":"'"$pr_title"'","body":"'"$pr_body"'","head":"'"$GITHUB_REF"'","base":"main"}' \
+            https://api.github.com/repos/${{ github.repository }}/pulls
