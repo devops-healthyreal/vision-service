@@ -41,13 +41,17 @@ pipeline {
         stage('Sync YAML to Server') {
             steps {
                 echo "🗂️ k3s-app.yaml 최신 버전을 서버로 동기화 (덮어쓰기 또는 신규 생성)"
-                // 서버에 yaml 폴더가 없으면 만들고, yaml 파일 덮어쓰기
-                sh """
-                ssh -o StrictHostKeyChecking=no ${DEPLOY_USER}@${DEPLOY_SERVER} '
-                    mkdir -p ${DEPLOY_PATH}
-                '
-                scp -o StrictHostKeyChecking=no ${YAML_FILE} ${DEPLOY_USER}@${DEPLOY_SERVER}:${DEPLOY_PATH}/${YAML_FILE}
-                """
+                script {
+                    sshagent(credentials: ['admin']) {
+                        // 서버에 yaml 폴더가 없으면 만들고, yaml 파일 덮어쓰기
+                        sh """
+                        ssh -o StrictHostKeyChecking=no ${DEPLOY_USER}@${DEPLOY_SERVER} '
+                            mkdir -p ${DEPLOY_PATH}
+                        '
+                        scp -o StrictHostKeyChecking=no ${YAML_FILE} ${DEPLOY_USER}@${DEPLOY_SERVER}:${DEPLOY_PATH}/${YAML_FILE}
+                        """
+                    }
+                }
             }
         }
 
