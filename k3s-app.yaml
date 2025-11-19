@@ -1,0 +1,71 @@
+# ------------------------------------------
+# 1️⃣ Flask Deployment
+# ------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vision-app
+  labels:
+    app: flask-app
+spec:
+  replicas: 1                           # Flask 서버 1개 (필요시 scale up 가능)
+  selector:
+    matchLabels:
+      app: flask-app
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      containers:
+        - name: vision-container
+          image: seung0208/vision-app:latest   # ✅ Jenkins에서 push한 Docker 이미지
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000              # Flask 내부 포트 (Gunicorn 바인드 포트와 동일)
+          envFrom:
+            - secretRef:
+                name: flask-env-secret         # ✅ .env 파일로 만든 Secret (선택사항)
+      restartPolicy: Always
+
+# ------------------------------------------
+# 2️⃣ Flask Service
+# ------------------------------------------
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-service
+  labels:
+    app: flask-service
+spec:
+  selector:
+    app: flask-app
+  type: ClusterIP
+  ports:
+    - port: 5000           # 클러스터 내부에서 접근할 포트
+      targetPort: 5000     # 컨테이너의 Flask 포트 (Gunicorn --bind)
+      protocol: TCP
+
+# ------------------------------------------
+# 3️⃣ Flask Ingress (외부 트래픽 유입)
+# ------------------------------------------
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: flask-ingress
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+    - host: 13.124.109.82.nip.io     # ✅ k3s 마스터 노드 IP 기반 테스트용 도메인 (또는 실제 도메인)
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: flask-service
+                port:
+                  number: 5000
