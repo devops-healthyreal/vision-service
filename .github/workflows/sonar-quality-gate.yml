@@ -27,7 +27,7 @@ jobs:
         with:
           python-version: '3.11'
 
-      # 테스트 파일을 돌릴 경우 필요 tt
+      # 테스트 파일을 돌릴 경우 필요
 #      - name: Install dependencies
 #        run: |
 #          pip install -r requirements.txt
