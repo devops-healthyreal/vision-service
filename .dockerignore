@@ -1,0 +1,119 @@
+# ------------------------
+# 🧠 기본 Python/Flask 빌드 제외 항목
+# ------------------------
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ------------------------
+# ⚙️ 환경 설정 / 비밀정보
+# ------------------------
+
+# 환경 변수 파일
+.env
+.env.*
+secret/
+
+# 비밀키, 인증 JSON (예: 구글 서비스 계정 등)
+*.pem
+*.key
+*.crt
+*.p12
+*.json
+*.secret
+
+# ------------------------
+# 🧩 IDE / OS / 로그 / 캐시 파일
+# ------------------------
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+*.pid
+*.seed
+*.cover
+coverage.xml
+
+# Pytest / Coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.cache
+.pytest_cache/
+
+# ------------------------
+# 🐳 Docker / Compose / Git
+# ------------------------
+
+# Docker build artifacts
+Dockerfile*
+docker-compose*.yml
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# ------------------------
+# 📦 Miscellaneous
+# ------------------------
+
+# Temporary files
+tmp/
+*.tmp
+*.swp
+*.bak
+*.old
+
+# Notebooks (optional)
+*.ipynb_checkpoints
+
+# Local test data
+tests/
+__tests__/
+test_*.py
+
+# ------------------------
+# ✅ Allowlist (keep)
+# ------------------------
+!requirements.txt
+!app/
+!src/
+!main.py
+!wsgi.py
