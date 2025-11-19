@@ -1,0 +1,51 @@
+# .github/workflows/sonarcloud-quality-gate.yml
+name: SonarCloud Quality Gate
+
+on:
+  push:
+    branches:
+      - develop        # 작업 브랜치
+  pull_request:
+    branches:
+      - main           # main 으로 가는 PR에도 체크 걸고 싶으면 유지
+
+jobs:
+  quality-gate:
+    name: SonarCloud Quality Gate   # 브랜치 보호에서 이 이름을 required check로 걸면 됨
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      # (선택) 문법 에러 정도만 체크하고 싶으면 써도 됨. 없어도 상관 없음.
+      - name: Quick syntax check
+        run: |
+          python -m compileall .
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        with:
+          args: >
+            -Dsonar.projectKey=YOUR_PROJECT_KEY
+            -Dsonar.organization=YOUR_ORG_KEY
+            -Dsonar.sources=.
+            -Dsonar.exclusions=**/migrations/**,**/venv/**,**/tests/**
+            -Dsonar.qualitygate.wait=true
+            -Dsonar.python.version=3.11
