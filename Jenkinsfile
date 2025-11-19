@@ -32,7 +32,7 @@ pipeline {
             steps {
                 echo "🚀 DockerHub 로그인 및 이미지 푸시"
                 sh '''
-                echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+                echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u seung0208 --password-stdin
                 docker push ${DOCKER_IMAGE}:latest
                 '''
             }
