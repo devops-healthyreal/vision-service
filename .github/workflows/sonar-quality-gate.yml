@@ -4,7 +4,7 @@ name: SonarCloud Quality Gate
 on:
 #  push:
 #    branches:
-#      - develop        # 작업 브랜치tt
+#      - develop        # 작업 브랜치
   pull_request:
     branches:
       - main           # main 으로 가는 PR에도 체크 걸고 싶으면 유지
