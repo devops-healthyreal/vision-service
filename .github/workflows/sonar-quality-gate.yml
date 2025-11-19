@@ -27,9 +27,10 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
+      # 테스트 파일을 돌릴 경우 필요
+#      - name: Install dependencies
+#        run: |
+#          pip install -r requirements.txt
 
       # (선택) 문법 에러 정도만 체크하고 싶으면 써도 됨. 없어도 상관 없음.
       - name: Quick syntax check
@@ -43,8 +44,8 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
           args: >
-            -Dsonar.projectKey=YOUR_PROJECT_KEY
-            -Dsonar.organization=YOUR_ORG_KEY
+            -Dsonar.projectKey=devops-healthyreal_vision-service
+            -Dsonar.organization=devops-healthyreal
             -Dsonar.sources=.
             -Dsonar.exclusions=**/migrations/**,**/venv/**,**/tests/**
             -Dsonar.qualitygate.wait=true
