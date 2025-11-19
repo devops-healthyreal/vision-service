@@ -54,16 +54,20 @@ pipeline {
         stage('Deploy to k3s Cluster') {
             steps {
                 echo "⚙️ 원격 서버에 배포(kubectl apply -f)"
-                // SSH 플러그인 사용 or 직접 SSH 실행
-                // kubectl set image <리소스종류>/<리소스이름> <deployment 내부에 정의한 컨테이너이름>=<새이미지> [옵션]
-                sh """
-                ssh -o StrictHostKeyChecking=no ${DEPLOY_USER}@${DEPLOY_SERVER} '
-                    echo "🔄 최신 Docker 이미지 Pull..."
-                    kubectl set image deployment/vision-app vision-container=${DOCKER_IMAGE}:latest --record || \
-                    kubectl apply -f ${DEPLOY_PATH}/k3s-app.yaml
-                    echo "✅ 배포 완료"
-                '
-                """
+                script {
+                    sshagent(credentials: ['admin']) {
+                        // SSH 플러그인 사용 or 직접 SSH 실행
+                        // kubectl set image <리소스종류>/<리소스이름> <deployment 내부에 정의한 컨테이너이름>=<새이미지> [옵션]
+                        sh """
+                        ssh -o StrictHostKeyChecking=no ${DEPLOY_USER}@${DEPLOY_SERVER} '
+                            echo "🔄 최신 Docker 이미지 Pull..."
+                            kubectl set image deployment/vision-app vision-container=${DOCKER_IMAGE}:latest --record || \
+                            kubectl apply -f ${DEPLOY_PATH}/k3s-app.yaml
+                            echo "✅ 배포 완료"
+                        '
+                        """
+                    }
+                }
             }
         }
     }
