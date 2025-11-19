@@ -47,6 +47,6 @@ jobs:
             -Dsonar.projectKey=devops-healthyreal_vision-service
             -Dsonar.organization=devops-healthyreal
             -Dsonar.sources=.
-            -Dsonar.exclusions=**/migrations/**,**/venv/**,**/tests/**
+            -Dsonar.exclusions=**/migrations/**,**/venv/**,**/tests/**,**/*.md,**/*.yml
             -Dsonar.qualitygate.wait=true
             -Dsonar.python.version=3.11
