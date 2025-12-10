@@ -1,0 +1,22 @@
+openapi: 3.0.3
+info:
+  title: My App
+  version: "1.0.0"
+paths:
+  /hello/{name}:
+    get:
+      tags: [demo]
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string }
