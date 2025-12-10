@@ -70,10 +70,10 @@ spec:
     - host: 13.124.109.82.nip.io     # ✅ k3s 마스터 노드 IP 기반 테스트용 도메인 (또는 실제 도메인)
       http:
         paths:
-          - path: /
+          - path: /ai/vision
             pathType: Prefix
             backend:
               service:
                 name: flask-service
                 port:
-                  number: 5000
+                  number: 7005
