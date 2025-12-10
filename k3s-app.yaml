@@ -25,8 +25,16 @@ spec:
             - containerPort: 5000              # Flask 내부 포트 (Gunicorn 바인드 포트와 동일)
           envFrom:
             - secretRef:
-                name: flask-env-secret         # ✅ .env 파일로 만든 Secret (선택사항)
+                name: vision-secrets         # ✅ .env 파일로 만든 Secret (선택사항)
+          volumeMounts:
+            - name: google-cred
+              mountPath: /app/credentials/healthyreal-90e4dd83e7d3.json
+              subPath: healthyreal-90e4dd83e7d3.json
       restartPolicy: Always
+      volumes:
+        - name: google-cred
+          secret:
+            secretName: google-credential-vision-secret
 
 # ------------------------------------------
 # 2️⃣ Flask Service
