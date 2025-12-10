@@ -22,7 +22,7 @@ spec:
           image: seung0208/vision-app:latest   # ✅ Jenkins에서 push한 Docker 이미지
           imagePullPolicy: Always
           ports:
-            - containerPort: 5000              # Flask 내부 포트 (Gunicorn 바인드 포트와 동일)
+            - containerPort: 7005              # Flask 내부 포트 (Gunicorn 바인드 포트와 동일)
           envFrom:
             - secretRef:
                 name: vision-secrets         # ✅ .env 파일로 만든 Secret (선택사항)
@@ -51,8 +51,8 @@ spec:
     app: flask-app
   type: ClusterIP
   ports:
-    - port: 5000           # 클러스터 내부에서 접근할 포트
-      targetPort: 5000     # 컨테이너의 Flask 포트 (Gunicorn --bind)
+    - port: 7005           # 클러스터 내부에서 접근할 포트
+      targetPort: 7005     # 컨테이너의 Flask 포트 (Gunicorn --bind)
       protocol: TCP
 
 # ------------------------------------------
